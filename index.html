@@ -1,0 +1,424 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Wrong Voice-over Clips</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one column of clip cards; each card = the clip as it plays now, what is wrong, and the voice-over to record */
+:root{
+  --bg:#f3f4f1; --surface:#ffffff; --line:#d9ddd5; --fg:#1c231f; --muted:#5b665f;
+  --accent:#1f6047; --accent-soft:#e2efe8; --warn:#9a5800; --warn-soft:#fbf0dc; --bad:#a5281f;
+  --sans:"IBM Plex Sans",system-ui,sans-serif; --ar:"IBM Plex Sans Arabic","Segoe UI","Tahoma",sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#131816; --surface:#1b211e; --line:#2d3631; --fg:#e3e8e4; --muted:#9aa59f;
+  --accent:#70c79f; --accent-soft:#1d3329; --warn:#f0b75e; --warn-soft:#33270f; --bad:#ff8f84; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#131816; --surface:#1b211e; --line:#2d3631; --fg:#e3e8e4; --muted:#9aa59f;
+  --accent:#70c79f; --accent-soft:#1d3329; --warn:#f0b75e; --warn-soft:#33270f; --bad:#ff8f84; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:24px}
+.eyebrow{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:1.8rem;font-weight:600;margin:4px 0 0;text-wrap:balance}
+h2{font-size:1.2rem;font-weight:600;margin:0;text-wrap:balance}
+.lead{margin:8px 0 0;max-width:68ch;color:var(--muted)}
+.rules{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 18px}
+.rules ul{margin:6px 0 0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.head{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline}
+.file{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+video{width:100%;max-width:100%;border-radius:8px;background:#000;display:block;aspect-ratio:16/9}
+.diff{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.diff div{border-radius:8px;padding:10px 12px;min-width:0}
+.now{background:var(--warn-soft)} .should{background:var(--accent-soft)}
+.diff b{display:block;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.now b{color:var(--warn)} .should b{color:var(--accent)}
+.voices{font-size:.92rem}
+.voices strong{font-weight:600}
+.direction{font-size:.92rem;color:var(--muted);margin:0}
+ol.lines{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+ol.lines li{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:start;border-top:1px solid var(--line);padding-top:8px}
+.t{font-family:var(--mono);font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.who{font-size:.8rem;font-weight:600;color:var(--accent)}
+.arabic{font-family:var(--ar);font-size:1.15rem;line-height:1.8;direction:rtl;text-align:right;margin:0}
+.flag{background:var(--warn-soft);border-radius:8px;padding:10px 12px;font-size:.92rem}
+.flag b{color:var(--warn)}
+.save{font-size:.88rem;color:var(--muted);margin:0}
+.save code{font-family:var(--mono);font-size:.82rem;color:var(--fg)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;font-size:.9rem;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+footer{font-size:.88rem;color:var(--muted)}
+.rc{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:.9rem;border-left:3px solid var(--accent);padding:4px 0 4px 10px;color:var(--muted)}
+.rc .num{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500;white-space:nowrap}
+.rc q{color:var(--fg)}
+.cmp{border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.cmp summary{cursor:pointer;font-weight:500;font-size:.92rem}
+.cmpw{overflow-x:auto;margin-top:8px}
+.cmp table{border-collapse:collapse;width:100%;min-width:620px;font-size:.9rem}
+.cmp th{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:600;padding:4px 6px;border-bottom:1px solid var(--line)}
+.cmp td{padding:6px;border-bottom:1px solid var(--line);vertical-align:top}
+.cmp td.arabic{font-size:1rem;line-height:1.7}
+.cmp .direction{margin-top:8px}
+.part{margin-top:12px;border-top:2px solid var(--accent);padding-top:16px}
+.ptable{display:flex;flex-direction:column;gap:0;overflow-x:auto}
+.prow{display:grid;grid-template-columns:150px 1fr 1fr 230px;gap:12px;align-items:center;border-top:1px solid var(--line);padding:10px 0;min-width:640px}
+.prow>*{min-width:0;margin:0}
+.phead{font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;border-top:0}
+.pn{font-size:.88rem;font-weight:500}
+.arabic.heard{color:var(--warn)}
+.plist{display:flex;flex-direction:column;gap:6px}
+.plist audio{width:100%;height:34px}
+video::cue{font-family:var(--ar);font-size:1.1rem}
+@media (max-width:560px){.diff{grid-template-columns:1fr} ol.lines li{grid-template-columns:1fr;gap:2px}}
+
+/* Review comments — a reviewer's tool, not part of the course: sticky-note yellow so nobody mistakes it for course content.
+   Only in --preview builds and review.html (never in a release index.html or the SCORM zip). */
+.rv-tab{position:fixed;z-index:150;left:16px;bottom:16px;display:flex;align-items:center;gap:8px;
+  font:800 16px/1.2 system-ui,"Segoe UI",Arial,sans-serif;background:#ffd84d;color:#2b2200;border:2px solid #b38f00;border-radius:28px;
+  min-height:52px;padding:10px 18px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.28);animation:rvPulse 1.6s ease-in-out .8s 3}
+.rv-tab .rv-ic{font-size:20px;line-height:1}
+.rv-tab:hover{background:#ffcd1a}
+.rv-tab:focus-visible{outline:3px solid #1f5fb8;outline-offset:3px}
+.rv-n:not(:empty){background:#2b2200;color:#ffd84d;border-radius:12px;min-width:24px;padding:2px 7px;text-align:center;font-size:13px}
+@keyframes rvPulse{0%,100%{box-shadow:0 6px 18px rgba(0,0,0,.28),0 0 0 0 rgba(255,200,0,.75)}50%{box-shadow:0 6px 18px rgba(0,0,0,.28),0 0 0 14px rgba(255,200,0,0)}}
+.rv-tip{position:fixed;z-index:151;left:16px;max-width:min(300px,calc(100vw - 32px));background:#2b2200;color:#fff;
+  font:600 14px/1.35 system-ui,"Segoe UI",Arial,sans-serif;border-radius:12px;padding:10px 14px;box-shadow:0 6px 18px rgba(0,0,0,.3);cursor:pointer}
+.rv-tip[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){.rv-tab{animation:none}}
+body::after{content:"";display:block;height:88px}   /* room at the page end, so the last course button can always scroll clear of the Comment button */
+.rv-panel{position:fixed;z-index:160;inset-inline-end:12px;bottom:12px;width:min(380px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;
+  background:#fffbe6;color:#2b2500;border:2px solid #e0b800;border-radius:14px;box-shadow:0 10px 34px rgba(0,0,0,.28);padding:14px 16px;
+  font:15px/1.4 system-ui,"Segoe UI",Arial,sans-serif;text-align:start}
+.rv-panel[hidden]{display:none}
+.rv-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.rv-head h2{margin:0;font-size:17px;font-weight:800;color:#2b2500}
+.rv-x{border:0;background:transparent;font-size:20px;line-height:1;cursor:pointer;color:#2b2500;min-width:40px;min-height:40px;border-radius:8px}
+.rv-where{margin:4px 0 10px;font-size:14px;color:#4a4000;overflow-wrap:anywhere}.rv-where span{color:#6b5e1a}
+.rv-l{display:block;font-weight:700;font-size:13px;margin:8px 0 3px}
+.rv-in{display:block;box-sizing:border-box;width:100%;font:inherit;color:#1c1c1c;background:#fff;border:1.5px solid #c9b45a;border-radius:8px;padding:8px 10px}
+textarea.rv-in{resize:vertical;min-height:84px}
+.rv-in:focus{outline:3px solid #1f5fb8;outline-offset:1px}
+.rv-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
+.rv-b{font:700 14px/1.2 system-ui,"Segoe UI",Arial,sans-serif;min-height:42px;padding:9px 14px;border-radius:21px;cursor:pointer;background:#3a2e00;color:#fff;border:1.5px solid #3a2e00}
+.rv-b:disabled{opacity:.45;cursor:default}
+.rv-b.rv-quiet{background:transparent;color:#3a2e00}
+.rv-msg{font-size:13px;font-weight:700;color:#0b6b3a}
+.rv-list{list-style:none;margin:12px 0 0;padding:0}
+.rv-list li{background:#fff;border:1px solid #e6d58a;border-radius:8px;padding:8px 10px;margin-top:6px;overflow-wrap:anywhere;white-space:pre-wrap}
+.rv-list li.rv-wait{border-style:dashed;background:#fffdf3}
+.rv-list small{display:block;color:#6b5e1a;margin-top:3px;white-space:normal}
+.rv-k{display:inline-block;font-size:11px;font-weight:800;background:#ffe680;border-radius:6px;padding:1px 6px;margin-inline-end:4px;white-space:normal}
+.rv-del{border:0;background:transparent;color:#a3261a;font:700 12px system-ui,Arial,sans-serif;cursor:pointer;padding:4px 0;min-height:28px}
+.rv-foot{border-top:1px dashed #d8c36a;margin-top:12px;padding-top:8px;font-size:14px}.rv-foot p{margin:4px 0}
+.rv-hint{color:#5a4f12;font-size:13px}
+@media (max-width:639px){.rv-tab{width:56px;height:56px;min-height:0;padding:0;justify-content:center;border-radius:50%;gap:0}.rv-tab .rv-ic{font-size:26px}
+  #rvLbl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .rv-n:not(:empty){position:absolute;top:-6px;right:-6px}}   /* a phone: a round chat button (its name stays for screen readers); review.js keeps it clear of the course */
+@media print{.rv-tab,.rv-panel,.rv-tip{display:none!important}}
+
+.rv-skip{margin:14px 0 4px;text-align:center}.rv-skip .btn{font-size:.85em;opacity:.85}
+.rv-next{position:fixed;z-index:150;left:178px;bottom:16px;display:flex;align-items:center;gap:6px;font:800 16px/1.2 system-ui,"Segoe UI",Arial,sans-serif;background:#fff;color:#2b2200;border:2px solid #b38f00;border-radius:28px;min-height:52px;padding:10px 18px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+.rv-next:hover{background:#fff7d1}.rv-next:focus-visible{outline:3px solid #b38f00;outline-offset:2px}
+/* review pages: room under each screen so the floating Comment / Next screen buttons never hide the course's own buttons */
+.screen{padding-bottom:84px}
+</style>
+
+<div class="wrap" id="main">
+  <header>
+    <div class="eyebrow">AFC27 · SMP · Review 1 comments #67 and #4 · 14 Nov 2026</div>
+    <h1>Wrong Voice-over Clips</h1>
+    <p class="lead">Part 1: three clips play the wrong recording. The pictures and the subtitles are right (each card shows the subtitles next to what the voice says now); only the voice-over needs to be recorded again, in ElevenLabs, from the approved Arabic below. Part 2: three things for an Arabic speaker to listen to and confirm. Play each clip with sound to hear the problem. To comment, scroll to a card and tap the Comment button at the bottom of the screen: your comment is saved against the card you are looking at.</p>
+  </header>
+
+  <section class="rules" aria-label="Rules for every recording">
+    <div class="eyebrow">For every recording</div>
+    <ul>
+      <li>Speak every word of each Arabic line exactly as written. Leave nothing out, add nothing, paraphrase nothing.</li>
+      <li>Saudi (Najdi) delivery. Keep to the timings shown.</li>
+      <li>Fahad is the narrator only. The characters are never Fahad.</li>
+      <li>Send back audio only, named as shown on each card.</li>
+    </ul>
+  </section>
+
+  <article class="card" id="clip-1">
+    <div class="head"><h2>1. SMP 2.2 · Two marshals, one match day</h2><span class="file">smp22-v01-hook.mp4 · screen 0.2 · 53.5 s</span></div>
+    <div class="rc"><span class="num">Review 1 · #67</span><q>In most training videos, the Arabic subtitles do not accurately match the information presented by the speaker.</q></div>
+    <video controls preload="metadata" src="video/smp22-v01-hook.mp4"></video>
+    <div class="diff">
+      <div class="now"><b>Plays now</b>The match-day countdown (check-in, briefing, gates open). That recording belongs to the match-clock clip later in the lesson.</div>
+      <div class="should"><b>Should play</b>The narrator telling the story of Noura and Majed arriving for the same shift.</div>
+    </div>
+    <details class="cmp" open><summary>Subtitles and voice-over as they are now</summary><div class="cmpw"><table><thead><tr><th>Time</th><th>Arabic subtitles</th><th>Time</th><th>Voice-over says (machine transcript)</th></tr></thead><tbody><tr><td class="t">0.5–3.7</td><td class="arabic">المباراة نفسها، ووقت تسجيل الحضور نفسه، ومنظِّمان.</td><td class="t">0.0–3.0</td><td class="arabic heard">يعدوا تنازلياً لين انطلاق المباراة</td></tr><tr><td class="t">4.2–10.6</td><td class="arabic">نورة موجودة مبكراً، بزي رسمي نظيف، وبطاقة تصريح الدخول حول رقبتها.</td><td class="t">3.0–7.6</td><td class="arabic heard">تسجلون حضوركم قبل انطلاق المباراة بحوالي أربع ساعات ونص</td></tr><tr><td class="t">11.1–15.2</td><td class="arabic">تسجّل حضورها وتستلم جهاز اللاسلكي وتختبره.</td><td class="t">7.6–13.8</td><td class="arabic heard">توقعون وتستلمون معداتكم وتاكلون · وقبل ثلاث ساعات فيه إحاطة عامة</td></tr><tr><td class="t">15.7–23.4</td><td class="arabic">أما ماجد فيصل متأخراً أربعين دقيقة، وسترته العاكسة في حقيبته، وبطاقة تصريح الدخول في البيت.</td><td class="t">13.8–25.8</td><td class="arabic heard">تنتشرون في منطقتكم… · وقبل انطلاق المباراة بساعتين تكونون في نقطة التمركز · البوابات تفتح قبل انطلاق المباراة بتسعين دقيقة</td></tr><tr><td class="t">25.3–28.3</td><td class="arabic">ومن دونها لا يستطيع الدخول.</td><td class="t">25.8–34.2</td><td class="arabic heard">في الشوط الثاني تنتظرون تعليمات مشرفكم… · وبعد صافرة النهاية نشغل الخروج حوالي ساعتين</td></tr><tr><td class="t">28.8–37.9</td><td class="arabic">لذلك تبدأ نقطة تمركزه عند البوابة 4 - التي سيعبر منها ألفا مشجع - اليوم فارغة.</td><td class="t">34.2–53.0</td><td class="arabic heard">…لما يعطيكم مشرفكم إشارة انهاء المناوبة… · انتبهوا لذروات الضغط الثلاث…</td></tr></tbody></table></div><p class="direction">The subtitles tell the Noura and Majed story; the voice-over is the match-day countdown, running to 53 s. Note: the subtitles are in formal Arabic, the lines to record below are the approved Saudi-dialect version, so after re-recording they match in meaning, not word for word (as agreed, DT 11).</p></details>
+    <p class="voices"><strong>Voice:</strong> Narrator (Khalid, heard only) = <strong>Fahad</strong>.</p>
+    <p class="direction">Calm storyteller, a slight contrast between Noura (bright, ready) and Majed (flat, let down). Start at 0.5 s; nothing after 38 s, the picture finishes on its own.</p>
+    <ol class="lines">
+      <li><span class="t">0.5 – 3.7 s</span><div><span class="who">Narrator</span><p class="arabic">نفس المباراة، ونفس وقت تسجيل الحضور، ومنظِّمين اثنين.</p></div></li>
+      <li><span class="t">4.2 – 10.6 s</span><div><span class="who">Narrator</span><p class="arabic">نورة جات بدري، بزيّ نظيف، وبطاقة تصريح الدخول معلّقة على رقبتها.</p></div></li>
+      <li><span class="t">11.1 – 15.2 s</span><div><span class="who">Narrator</span><p class="arabic">تسجّل حضورها، وتستلم جهاز اللاسلكي وتجرّبه.</p></div></li>
+      <li><span class="t">15.7 – 23.4 s</span><div><span class="who">Narrator</span><p class="arabic">ماجد يوصل متأخر أربعين دقيقة، سترته العاكسة في شنطته، وبطاقة تصريح الدخول في البيت.</p></div></li>
+      <li><span class="t">25.3 – 28.3 s</span><div><span class="who">Narrator</span><p class="arabic">وبدونها ما يقدر يدخل.</p></div></li>
+      <li><span class="t">28.8 – 37.9 s</span><div><span class="who">Narrator</span><p class="arabic">فنقطة تمركزه عند البوابة 4 - اللي بيمر منها ألفين مشجع - تبدأ اليوم فاضية.</p></div></li>
+    </ol>
+    <div class="flag"><b>Check before recording:</b> line 3 says Noura collects and tests a radio. It is the approved line and is kept as written; the client says only a few marshals carry radios. Comment here if it should change.</div>
+    <p class="save">Save as <code>smp22-v01-hook.ar.m4a</code></p>
+    <div class="actions"><button type="button" class="cbtn" data-target="clip-1" hidden>Comment on this clip</button></div>
+  </article>
+
+  <article class="card" id="clip-2">
+    <div class="head"><h2>2. SMP 2.1 · The emergency gate</h2><span class="file">smp21-v4-gate.mp4 · screen 5.7 · 20.1 s</span></div>
+    <div class="rc"><span class="num">Review 1 · #67</span><q>In most training videos, the Arabic subtitles do not accurately match the information presented by the speaker.</q></div>
+    <video controls preload="metadata" src="video/smp21-v4-gate.mp4"></video>
+    <div class="diff">
+      <div class="now"><b>Plays now</b>A narrator describing the scene ("a man says he is from venue management…").</div>
+      <div class="should"><b>Should play</b>The dialogue only, no narrator: the man asks Faisal to open the gate, Faisal politely says no.</div>
+    </div>
+    <details class="cmp" open><summary>Subtitles and voice-over as they are now</summary><div class="cmpw"><table><thead><tr><th>Time</th><th>Arabic subtitles</th><th>Time</th><th>Voice-over says (machine transcript)</th></tr></thead><tbody><tr><td class="t">0.3–5.8</td><td class="arabic">رجل: أنا من إدارة الملعب. افتح بوابة الطوارئ عشان عائلتي تدخل.</td><td class="t">0.0–6.0</td><td class="arabic heard">رجل يقول إنه من إدارة الملعب ويطلب من فيصل فتح بوابة الطوارئ لعائلته</td></tr><tr><td class="t">6.4–9.8</td><td class="arabic">فيصل: حيّاك الله أستاذي. والله آسف، ما أقدر أفتح هذي البوابة.</td><td class="t">6.0–10.0</td><td class="arabic heard">فيصل يعتذر له بأدب ويبقي البوابة مغلقة</td></tr><tr><td class="t">10.1–16.1</td><td class="arabic">فيصل: بعد اذنك وريني بطاقة الدخول؟ بكلّم المشرف حقي الحين.</td><td class="t">10.0–16.0</td><td class="arabic heard">بعدها يطلب فيصل من الرجل بطاقة الدخول ويخبره أنه سيتواصل مع مشرفه حالاً</td></tr><tr><td class="t">—</td><td class="arabic">—</td><td class="t">16.0–20.0</td><td class="arabic heard">ثم يرفع جهاز اللاسلكي استعداداً للاتصال بمشرفه</td></tr></tbody></table></div><p class="direction">The subtitles are the characters speaking; the voice-over is a narrator describing them, plus a last line about the radio that has no subtitle. After re-recording, the voice matches the subtitles word for word.</p></details>
+    <p class="voices"><strong>Voices:</strong> Man = an adult Saudi male voice, firm and a little impatient, <strong>not Fahad</strong>. Faisal (marshal) = a young Saudi male voice, calm and polite, <strong>not Fahad</strong>, and not the same voice as the man.</p>
+    <p class="direction">A real conversation. Start at 0.3 s; silence after 16.1 s.</p>
+    <ol class="lines">
+      <li><span class="t">0.3 – 5.8 s</span><div><span class="who">Man</span><p class="arabic">أنا من إدارة الملعب. افتح بوابة الطوارئ عشان عائلتي تدخل.</p></div></li>
+      <li><span class="t">6.4 – 9.8 s</span><div><span class="who">Faisal</span><p class="arabic">حيّاك الله أستاذي. والله آسف، ما أقدر أفتح هذي البوابة.</p></div></li>
+      <li><span class="t">10.1 – 16.1 s</span><div><span class="who">Faisal</span><p class="arabic">بعد اذنك وريني بطاقة الدخول؟ بكلّم المشرف حقي الحين.</p></div></li>
+    </ol>
+    <p class="save">Save as <code>smp21-v4-gate.ar.m4a</code></p>
+    <div class="actions"><button type="button" class="cbtn" data-target="clip-2" hidden>Comment on this clip</button></div>
+  </article>
+
+  <article class="card" id="clip-3">
+    <div class="head"><h2>3. SMP 2.1 · Hold that man</h2><span class="file">smp21-v4-hold.mp4 · screen 5.8 · 20.4 s</span></div>
+    <div class="rc"><span class="num">Review 1 · #67</span><q>In most training videos, the Arabic subtitles do not accurately match the information presented by the speaker.</q></div>
+    <video controls preload="metadata" src="video/smp21-v4-hold.mp4"></video>
+    <div class="diff">
+      <div class="now"><b>Plays now</b>A narrator describing the scene.</div>
+      <div class="should"><b>Should play</b>The dialogue only: a staff member asks Faisal to hold a man; Faisal says he cannot, keeps him in sight and calls Security.</div>
+    </div>
+    <details class="cmp" open><summary>Subtitles and voice-over as they are now</summary><div class="cmpw"><table><thead><tr><th>Time</th><th>Arabic subtitles</th><th>Time</th><th>Voice-over says (machine transcript)</th></tr></thead><tbody><tr><td class="t">0.2–6.7</td><td class="arabic">موظف: امسك هالرجّال هنا لين توصل الشرطة، أظن إنه سرق جوال.</td><td class="t">0.0–7.0</td><td class="arabic heard">موظف يطلب من فيصل يمسك شاب واقف عند الجدار لين توصل الشرطة · لأنه يشتبه أنه سرق جوال</td></tr><tr><td class="t">7.3–14.7</td><td class="arabic">فيصل: ما أقدر أمسك أحد، بس بخلّيه قدّام عيني وبكلّم الأمن الحين.</td><td class="t">7.0–15.0</td><td class="arabic heard">فيصل يسمع الطلب ويرفض بهدوء · فيصل يوضح أنه ما يقدر يمسك أحد · لكنه بيخلي الشاب قدام عينه</td></tr><tr><td class="t">—</td><td class="arabic">—</td><td class="t">15.0–20.0</td><td class="arabic heard">وبعدين يرفع اللاسلكي عشان يبلغ الأمن فورا</td></tr></tbody></table></div><p class="direction">Same problem as clip 2: a narrator describing the scene instead of the dialogue, with an extra line about the radio. After re-recording, the voice matches the subtitles word for word.</p></details>
+    <p class="voices"><strong>Voices:</strong> Staff member = an adult Saudi male voice, hurried and worried, <strong>not Fahad</strong>, and not the man from clip 2. Faisal = the <strong>same voice as Faisal in clip 2</strong>, <strong>not Fahad</strong>.</p>
+    <p class="direction">Start at 0.2 s; silence after 14.7 s.</p>
+    <ol class="lines">
+      <li><span class="t">0.2 – 6.7 s</span><div><span class="who">Staff member</span><p class="arabic">امسك هالرجّال هنا لين توصل الشرطة، أظن إنه سرق جوال.</p></div></li>
+      <li><span class="t">7.3 – 14.7 s</span><div><span class="who">Faisal</span><p class="arabic">ما أقدر أمسك أحد، بس بخلّيه قدّام عيني وبكلّم الأمن الحين.</p></div></li>
+    </ol>
+    <p class="save">Save as <code>smp21-v4-hold.ar.m4a</code></p>
+    <div class="actions"><button type="button" class="cbtn" data-target="clip-3" hidden>Comment on this clip</button></div>
+  </article>
+
+  <header class="part">
+    <div class="eyebrow">Part 2 · for the Arabic speaker to check</div>
+    <h2>Listen and confirm</h2>
+    <p class="lead">Three more checks found while transcribing every SMP clip. Please listen, then leave a comment on each card with your answer.</p>
+  </header>
+
+  <article class="card" id="check-4">
+    <div class="head"><h2>4. SMP 4.2 · Stage 3 (a voice nobody can read)</h2><span class="file">smp42-v09-stage3.mp4 · screen 6.11 · 12 s</span></div>
+    <div class="rc"><span class="num">Review 1 · #67</span><q>In most training videos, the Arabic subtitles do not accurately match the information presented by the speaker.</q> Found while checking this comment.</div>
+    <video controls preload="metadata" src="video/smp42-v09-stage3.mp4"></video>
+    <div class="diff">
+      <div class="now"><b>Plays now</b>Between about 2.6 and 7.6 s a voice in the crowd says a rumour. The clip was planned as silent, so it has no subtitles: a learner without sound misses it.</div>
+      <div class="should"><b>Decide</b>Keep the voice and add subtitles for it, or remove the sound so the clip is silent as planned.</div>
+    </div>
+    <details class="cmp" open><summary>Subtitles and voice-over as they are now</summary><div class="cmpw"><table><thead><tr><th>Time</th><th>Arabic subtitles</th><th>Time</th><th>Voice-over says (machine transcript)</th></tr></thead><tbody><tr><td class="t">—</td><td class="arabic">(no subtitles)</td><td class="t">2.6–7.6</td><td class="arabic heard">يقولون أن البوابة ستة مغلقة، الجميع إلى البوابة ثمانية.</td></tr></tbody></table></div><p class="direction">A voice with no subtitle at all.</p></details>
+    <ol class="lines">
+      <li><span class="t">2.6 – 7.6 s</span><div><span class="who">Voice in the crowd (machine transcript, not checked)</span><p class="arabic">يقولون أن البوابة ستة مغلقة، الجميع إلى البوابة ثمانية.</p></div></li>
+    </ol>
+    <div class="flag"><b>Please answer:</b> (1) Write the line exactly as you hear it. (2) Keep it with subtitles, or remove the sound? English meaning: "They say Gate 6 is closed, everyone to Gate 8."</div>
+    <div class="actions"><button type="button" class="cbtn" data-target="check-4" hidden>Comment on this clip</button></div>
+  </article>
+
+  <article class="card" id="check-5">
+    <div class="head"><h2>5. SMP 1.3 · Phrase bank recordings</h2><span class="file">screen 5.1 · 17 recordings</span></div>
+    <div class="rc"><span class="num">Review 1 · #4</span><q>The written phrase and the voice phrase aren't identical.</q></div>
+    <p class="direction">The phrase cards show the approved Arabic, but 7 phrases were recorded with different words. The plan is to keep the card text and record these again. Play each recording and compare it with the card. Phrases 1, 4, 5, 6 and 11 match and are not listed.</p>
+    <div class="ptable">
+      <div class="prow phead"><span>Phrase</span><span>Card says (approved)</span><span>Recording now (machine transcript)</span><span>Listen</span></div>
+      <div class="prow"><span class="pn">2 · Welcome to the city</span><p class="arabic">حياكم الله في الرياض / جدة / الخبر</p><p class="arabic heard">أهلا وسهلا بك في الرياض / جدة / الخبر</p><span class="plist"><audio controls preload="none" src="audio/smp13-au-p02-riyadh-to-male.mp3" aria-label="Phrase 2 Riyadh, to a man"></audio><audio controls preload="none" src="audio/smp13-au-p02-jeddah-to-female.mp3" aria-label="Phrase 2 Jeddah, to a woman"></audio></span></div>
+      <div class="prow"><span class="pn">3 · How can I help you?</span><p class="arabic">كيف أقدر أساعدك؟</p><p class="arabic heard">كيف يمكنني مساعدتك؟</p><span class="plist"><audio controls preload="none" src="audio/smp13-au-p03-to-male.mp3" aria-label="Phrase 3 to a man"></audio><audio controls preload="none" src="audio/smp13-au-p03-to-female.mp3" aria-label="Phrase 3 to a woman"></audio></span></div>
+      <div class="prow"><span class="pn">7 · Sorry for the wait</span><p class="arabic">آسف على الانتظار، شكراً لصبرك</p><p class="arabic heard">اعتذر عن التأخير وشكرا لصبرك</p><span class="plist"><audio controls preload="none" src="audio/smp13-au-p07-to-male.mp3" aria-label="Phrase 7 to a man"></audio><audio controls preload="none" src="audio/smp13-au-p07-to-female.mp3" aria-label="Phrase 7 to a woman"></audio></span></div>
+      <div class="prow"><span class="pn">8 · This gate is exit only</span><p class="arabic">آسف، هذه البوابة للخروج فقط. المدخل من هناك</p><p class="arabic heard">اعتذر هذه البوابة للخروج فقط المدخل من هناك</p><span class="plist"><audio controls preload="none" src="audio/smp13-au-p08-both.mp3" aria-label="Phrase 8"></audio></span></div>
+      <div class="prow"><span class="pn">9 · Do you need help?</span><p class="arabic">هل تحتاج مساعدة؟</p><p class="arabic heard">هل تحتاج إلى مساعدة؟</p><span class="plist"><audio controls preload="none" src="audio/smp13-au-p09-to-male.mp3" aria-label="Phrase 9 to a man"></audio><audio controls preload="none" src="audio/smp13-au-p09-to-female.mp3" aria-label="Phrase 9 to a woman"></audio></span></div>
+      <div class="prow"><span class="pn">10 · I'll ask a female colleague</span><p class="arabic">سأطلب زميلة لمساعدتك</p><p class="arabic heard">سأطلب من زميلة أن تساعدك</p><span class="plist"><audio controls preload="none" src="audio/smp13-au-p10-to-male.mp3" aria-label="Phrase 10 to a man"></audio><audio controls preload="none" src="audio/smp13-au-p10-to-female.mp3" aria-label="Phrase 10 to a woman"></audio></span></div>
+      <div class="prow"><span class="pn">12 · Enjoy the match! Safe journey home</span><p class="arabic">استمتع بالمباراة! مع السلامة</p><p class="arabic heard">استمتع بالمباراة، أتمنى لك رحلة عودة آمنة إلى المنزل</p><span class="plist"><audio controls preload="none" src="audio/smp13-au-p12-to-male.mp3" aria-label="Phrase 12 to a man"></audio><audio controls preload="none" src="audio/smp13-au-p12-to-female.mp3" aria-label="Phrase 12 to a woman"></audio></span></div>
+    </div>
+    <div class="flag"><b>Please answer:</b> do the recordings say what the second column shows? Phrase 9 differs by one word only (إلى): is that worth recording again, or acceptable? For "to a woman" the feminine forms are intended (تحتاجين، استمتعي).</div>
+    <div class="actions"><button type="button" class="cbtn" data-target="check-5" hidden>Comment on the phrase bank</button></div>
+  </article>
+
+  <article class="card" id="check-6">
+    <div class="head"><h2>6. SMP 1.2 · Corrected Arabic subtitles</h2><span class="file">smp12-v3-2-3.mp4 · 16.5 s</span></div>
+    <div class="rc"><span class="num">Review 1 · #67</span><q>In most training videos, the Arabic subtitles do not accurately match the information presented by the speaker.</q></div>
+    <video id="v123" controls preload="metadata" src="video/smp12-v3-2-3.mp4"></video>
+    <p class="direction">In 8 SMP 1.2 clips the Arabic subtitles showed the line before the one being spoken. They are now corrected to the approved Arabic on the same timings. This clip shows the fix; please play it with sound and confirm each subtitle matches what Khalid says.</p>
+    <div class="flag"><b>Please answer:</b> do the subtitles now match the voice, line by line?</div>
+    <div class="actions"><button type="button" class="cbtn" data-target="check-6" hidden>Comment on this clip</button></div>
+  </article>
+
+  <footer>The Arabic is the client-approved text. The subtitles in the lessons already show these lines (clip 1 in formal Arabic, as agreed), so only the audio changes. After the new recordings are placed, each lesson is rebuilt and checked.</footer>
+</div>
+
+<script>
+(async function(){
+  try{
+    var r=await fetch("captions/smp12-v3-2-3.ar.vtt.txt"); if(!r.ok) return;
+    var url=URL.createObjectURL(new Blob([await r.text()],{type:"text/vtt"}));
+    var t=document.createElement("track"); t.kind="subtitles"; t.srclang="ar"; t.label="العربية"; t.src=url; t.default=true;
+    var v=document.getElementById("v123"); v.appendChild(t); t.addEventListener("load",function(){ if(v.textTracks[0]) v.textTracks[0].mode="showing"; });
+  }catch(e){}
+})();
+(async function(){
+  var c=null;
+  try{ c = window.claude && window.claude.use ? await window.claude.use("comments") : null; }catch(e){ c=null; }
+  if(!c) return;
+  document.querySelectorAll(".cbtn").forEach(function(b){
+    b.hidden=false;
+    b.addEventListener("click",function(){
+      var el=document.getElementById(b.dataset.target);
+      c.openComposer({element:el}).catch(function(){});
+    });
+  });
+})();
+</script>
+<script>
+(function(){
+var COURSE={id:"smp-review1-voiceover",reviewSheet:"https://script.google.com/macros/s/AKfycbx5ytdUHl8PepmGOV02BoWL37g7uhVUnxN7YMKvlL85H3Ashe8Sx98be2LI5gApxkDK/exec"};
+var cards=[].slice.call(document.querySelectorAll("article.card"));
+var S=cards.map(function(c){return {id:c.id,sec:(c.querySelector("h2")||{}).textContent||c.id};}),cur=0,LANG="en",T=null,SCRIPT;
+function g(id){return document.getElementById(id);}
+function el(h){var d=document.createElement("div");d.innerHTML=h;return d.firstElementChild;}
+var render=function(){};
+function pick(){var best=0,bd=1e9;cards.forEach(function(c,i){var r=c.getBoundingClientRect(),d=Math.abs(r.top+Math.min(r.height,400)/2-innerHeight/2);if(d<bd){bd=d;best=i;}});if(best!==cur){cur=best;render(cur);}}
+/* ---- Review comments (user, 2026-10-17): a comment box on every screen of a course under review ----
+   Built in ONLY by build.py: in a --preview build (index.html) and in review.html beside a release build. Never in index.html of a
+   release, never in the SCORM zip. Runs inside the engine's closure (S, cur, render, COURSE, LANG, T).
+   Shared mode (COURSE.reviewSheet = the team's Google Sheet web app, system/docs/REVIEW-COMMENTS.md): every comment goes to the
+   sheet and shows on its screen for every reviewer, with no login; reviewers cannot delete it — it leaves the course only when the
+   team marks it Resolved in the sheet. A comment that cannot be sent yet waits in this browser and is sent when the line is back.
+   Without a sheet: comments stay in this browser until the reviewer downloads them (CSV, opens in Excel) and sends the file. */
+(function(){
+var URL_=COURSE.reviewSheet||'',SHARED=!!URL_,KEY='ck-review-'+COURSE.id,QKEY=KEY+'-unsent',NAME='ck-review-name',BOM=String.fromCharCode(0xFEFF);
+var mine=[],remote=[],mem=false,net='',lastLoad=0,sending=false;   /* mine: this browser's comments (all of them without a sheet; the unsent ones with one) */
+try{mine=JSON.parse(localStorage.getItem(SHARED?QKEY:KEY)||'[]')||[];}catch(e){mem=true;}
+function store(){try{localStorage.setItem(SHARED?QKEY:KEY,JSON.stringify(mine));}catch(e){mem=true;}}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function txt(v){try{return typeof T==='function'?T(v):(v&&v.en)||v||'';}catch(e){return '';}}
+function uid(){return Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8);}
+function here(){
+  var d=S[cur]||{},sc=null;
+  if(typeof SCRIPT!=='undefined'&&SCRIPT&&SCRIPT.screens)for(var i=0;i<SCRIPT.screens.length;i++)if(SCRIPT.screens[i].id===d.id){sc=SCRIPT.screens[i];break;}
+  var h=document.querySelector('#main h2,#main h1,#main .kicker');
+  var head=(sc&&txt(sc.heading))||(h?h.textContent:'')||'';
+  return {id:d.id||'',sec:d.sec==null?'':String(d.sec),type:(sc&&sc.type)||'',head:String(head).replace(/\s+/g,' ').trim().slice(0,120),n:cur+1,of:S.length};
+}
+function all(){var seen={},out=[];remote.concat(mine).forEach(function(c){if(!seen[c.id]){seen[c.id]=1;out.push(c);}});return out;}
+function sent(c){return !SHARED||remote.some(function(r){return r.id===c.id;});}
+var KINDS=['Wording','Translation','Picture or video','Activity','Not working','Other'];
+var tab=el('<button type="button" class="rv-tab" id="rvTab" aria-haspopup="dialog" aria-controls="rvPanel"><span class="rv-ic" aria-hidden="true">💬</span><span id="rvLbl">Comment</span> <b class="rv-n" id="rvN"></b></button>');
+var tip=el('<div class="rv-tip" id="rvTip" role="note" hidden>Reviewers: tap here to leave a comment on this screen.</div>');
+var pn=el('<div class="rv-panel" id="rvPanel" role="dialog" aria-modal="false" aria-labelledby="rvTitle" hidden>'+
+  '<div class="rv-head"><h2 id="rvTitle">Review comments</h2><button type="button" class="rv-x" id="rvClose" aria-label="Close">✕</button></div>'+
+  '<p class="rv-where" id="rvWhere"></p>'+
+  '<ul class="rv-list" id="rvList"></ul>'+
+  '<label class="rv-l" for="rvBy">Your name</label><input class="rv-in" id="rvBy" type="text" autocomplete="name">'+
+  '<label class="rv-l" for="rvKind">What is it about?</label><select class="rv-in" id="rvKind">'+KINDS.map(function(k){return '<option>'+k+'</option>';}).join('')+'</select>'+
+  '<label class="rv-l" for="rvText">Your comment on this screen</label><textarea class="rv-in" id="rvText" rows="4"></textarea>'+
+  '<div class="rv-row"><button type="button" class="rv-b rv-save" id="rvSave">Save comment</button><span class="rv-msg" id="rvMsg" role="status"></span></div>'+
+  '<div class="rv-foot"><p id="rvAll"></p><p class="rv-hint" id="rvHint"></p>'+
+  '<div class="rv-row"><button type="button" class="rv-b" id="rvDown">Download all comments</button>'+(SHARED?'':'<button type="button" class="rv-b rv-quiet" id="rvClear">Delete all</button>')+'</div></div>'+
+  '</div>');
+document.body.appendChild(tab);document.body.appendChild(tip);document.body.appendChild(pn);
+/* keep the button clear of the course: above the sticky button bar on a phone; the tip sits just above the button */
+function pinned(e){   /* inside a bar that stays put on screen (sticky / fixed), not content that scrolls past */
+  for(var n=e;n&&n.id!=='stage';n=n.parentElement){var p=getComputedStyle(n).position;if(p==='sticky'||p==='fixed')return true;}return false;}
+function place(){   /* keep clear of the course: rise above the fixed bars (sticky Next bar, side lesson list) and, by a little, above
+                       buttons near the bottom; use the bottom corner that is freest (the reading-start corner on a tie) */
+  var w=tab.offsetWidth,h=tab.offsetHeight,start=getComputedStyle(document.documentElement).direction==='rtl'?'right':'left';
+  var els=[].slice.call(document.querySelectorAll('#main button,#main a,#main input,#main select,#main [role=button]'))
+    .map(function(e){var r=e.getBoundingClientRect();return {r:r,pin:pinned(e)};}).filter(function(x){return x.r.width&&x.r.height;});
+  function fit(side){var left=side==='left'?16:innerWidth-16-w,bottom=16,hit=0;
+    for(var pass=0;pass<8;pass++){var top=innerHeight-bottom-h,moved=false;
+      els.forEach(function(x){var r=x.r;if(r.right>left&&r.left<left+w&&r.bottom>top&&r.top<top+h){var nb=innerHeight-r.top+10;
+        if(x.pin||nb<=160){bottom=Math.max(bottom,nb);moved=true;}}});
+      if(!moved)break;}
+    bottom=Math.min(bottom,innerHeight*0.5);var top2=innerHeight-bottom-h;   /* what still lies under it: a fixed bar counts more (it cannot be scrolled away) */
+    els.forEach(function(x){var r=x.r;if(r.right>left&&r.left<left+w&&r.bottom>top2&&r.top<top2+h)hit+=x.pin?10:1;});
+    return {side:side,bottom:bottom,hit:hit};}
+  var a=fit(start),b=fit(start==='left'?'right':'left');
+  var best=(b.hit<a.hit||(b.hit===a.hit&&b.bottom<a.bottom))?b:a;
+  tab.style.left=tip.style.left=best.side==='left'?'16px':'auto';tab.style.right=tip.style.right=best.side==='right'?'16px':'auto';
+  tab.style.bottom=best.bottom+'px';tip.style.bottom=(best.bottom+h+10)+'px';}
+window.addEventListener('resize',place);window.addEventListener('scroll',place,{passive:true});
+var TIPKEY='ck-review-tip-seen';try{if(!localStorage.getItem(TIPKEY)){tip.hidden=false;setTimeout(function(){tip.hidden=true;},9000);}}catch(e){}
+function tipDone(){tip.hidden=true;try{localStorage.setItem(TIPKEY,'1');}catch(e){}}
+tip.addEventListener('click',function(){tipDone();open_();});
+var by=g('rvBy');try{by.value=localStorage.getItem(NAME)||'';}catch(e){}
+function onScreen(id){return all().filter(function(c){return c.screen===id;}).sort(function(a,b){return a.saved_at<b.saved_at?-1:1;});}
+function refresh(){
+  var w=here(),m=onScreen(w.id);
+  g('rvN').textContent=m.length?String(m.length):'';place();
+  tab.setAttribute('aria-label','Review comments'+(m.length?' ('+m.length+' on this screen)':''));
+  if(pn.hidden)return;
+  g('rvWhere').innerHTML='Screen <b>'+esc(w.id||'start')+'</b>'+(w.head?' · '+esc(w.head):'')+' <span>('+w.n+' of '+w.of+')</span>';
+  g('rvList').innerHTML=m.map(function(c){var ok=sent(c);return '<li'+(ok?'':' class="rv-wait"')+'><span class="rv-k">'+esc(c.kind)+'</span> '+esc(c.comment)+
+    '<small>'+esc(c.reviewer||'Reviewer')+' · '+esc(String(c.saved_at||'').slice(0,10))+(c.language?' · '+esc(c.language):'')+(ok?'':' · <b>Not sent yet</b>')+'</small>'+
+    (ok&&SHARED?'':'<button type="button" class="rv-del" data-id="'+esc(c.id)+'">Delete</button>')+'</li>';}).join('');
+  var n=all().length;
+  g('rvAll').textContent=SHARED?(n===1?'1 open comment on this course.':n+' open comments on this course.'):(n===1?'1 comment saved in this course.':n+' comments saved in this course.');
+  g('rvHint').textContent=SHARED?(net==='down'?'Cannot reach the comment sheet. Your comments are kept here and sent when the connection is back.':
+      'Everyone reviewing this course sees these comments. The course team removes a comment when it is fixed.'):
+    (mem?'This browser cannot keep comments. Download them before you close the page.':
+      'Comments stay in this browser. When you finish, tap "Download all comments" and send the file back.');
+  g('rvDown').disabled=!n;if(g('rvClear'))g('rvClear').disabled=!n;
+}
+/* ---- the shared sheet: read open comments, send waiting ones (plain-text POST: no login, no preflight) ---- */
+function load(force){
+  if(!SHARED||(!force&&Date.now()-lastLoad<15000))return;lastLoad=Date.now();
+  fetch(URL_+(URL_.indexOf('?')<0?'?':'&')+'course='+encodeURIComponent(COURSE.id)+'&t='+Date.now(),{cache:'no-store'})
+    .then(function(r){return r.json();}).then(function(d){if(!d||!d.ok)throw 0;remote=d.comments||[];net='up';
+      mine=mine.filter(function(c){return !remote.some(function(r){return r.id===c.id;});});store();refresh();})
+    .catch(function(){net='down';refresh();});
+}
+function send(){
+  if(!SHARED||sending||!mine.length)return;sending=true;
+  var c=mine[0];
+  fetch(URL_,{method:'POST',body:JSON.stringify({action:'add',comment:c})}).then(function(r){return r.json();}).then(function(d){
+    if(!d||!d.ok)throw 0;net='up';remote.push(c);mine=mine.filter(function(x){return x.id!==c.id;});store();sending=false;refresh();send();
+  }).catch(function(){sending=false;net='down';refresh();});
+}
+function open_(){pn.hidden=false;tab.setAttribute('aria-expanded','true');g('rvMsg').textContent='';refresh();load();send();g('rvText').focus();}
+function close_(){pn.hidden=true;tab.setAttribute('aria-expanded','false');tab.focus();}
+tab.addEventListener('click',function(){tipDone();if(pn.hidden)open_();else close_();});
+g('rvClose').addEventListener('click',close_);
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!pn.hidden)close_();});
+g('rvSave').addEventListener('click',function(){
+  var t=g('rvText').value.trim();if(!t){g('rvMsg').textContent='Type a comment first.';g('rvText').focus();return;}
+  var w=here(),name=by.value.trim();try{localStorage.setItem(NAME,name);}catch(e){}
+  mine.push({id:uid(),course:COURSE.id,screen:w.id,screen_no:w.n,lesson:w.sec,screen_type:w.type,heading:w.head,
+    language:(typeof LANG!=='undefined'?LANG:''),kind:g('rvKind').value,comment:t,reviewer:name,saved_at:new Date().toISOString()});
+  store();g('rvText').value='';g('rvMsg').textContent='Saved.';refresh();send();
+});
+g('rvList').addEventListener('click',function(e){var b=e.target.closest('.rv-del');if(!b)return;   /* only this browser's own, not-yet-sent comments */
+  mine=mine.filter(function(c){return c.id!==b.getAttribute('data-id');});store();refresh();});
+function csv(v){v=String(v==null?'':v);return /[",\r\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
+g('rvDown').addEventListener('click',function(){
+  var cols=['course','screen','screen_no','lesson','screen_type','heading','language','kind','comment','reviewer','saved_at','id'];
+  var rows=all().sort(function(a,b){return (a.screen_no-b.screen_no)||(a.saved_at<b.saved_at?-1:1);}).map(function(c){
+    return cols.map(function(k){return csv(k==='course'?COURSE.id:c[k]);}).join(',');});
+  var blob=new Blob([BOM+cols.join(',')+'\r\n'+rows.join('\r\n')+'\r\n'],{type:'text/csv;charset=utf-8'});
+  var who=(by.value.trim()||'reviewer').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,'')||'reviewer';
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=COURSE.id+'-review-'+who+'.csv';
+  document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
+});
+if(g('rvClear'))g('rvClear').addEventListener('click',function(){
+  if(!mine.length||!window.confirm('Delete all '+mine.length+' comments in this course? Download them first if you have not sent them.'))return;
+  mine=[];store();refresh();
+});
+var _render=render;
+render=function(i){_render(i);refresh();setTimeout(place,250);};
+if(SHARED){load(true);send();setInterval(function(){if(!document.hidden){load();send();}},60000);window.addEventListener('online',function(){load(true);send();});}
+window.addEventListener('beforeunload',function(e){if((mem||SHARED)&&mine.length&&(mem||net==='down')){e.preventDefault();e.returnValue='';}});
+})();
+
+var tm;addEventListener("scroll",function(){clearTimeout(tm);tm=setTimeout(pick,150);},{passive:true});
+pick();render(cur);
+})();
+</script>
+</body></html>
