@@ -71,6 +71,13 @@ footer{font-size:.88rem;color:var(--muted)}
 video::cue{font-family:var(--ar);font-size:1.1rem}
 @media (max-width:560px){.diff{grid-template-columns:1fr} ol.lines li{grid-template-columns:1fr;gap:2px}}
 
+.steps{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.steps h2{font-size:1rem;margin:0 0 6px}
+.steps ol{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px;font-size:.93rem}
+.ask{background:var(--accent-soft);border-radius:8px;padding:10px 12px;font-size:.95rem}
+.ask b{color:var(--accent)}
+@media (max-width:640px){.steps{grid-template-columns:1fr}}
+
 /* Review comments — a reviewer's tool, not part of the course: sticky-note yellow so nobody mistakes it for course content.
    Only in --preview builds and review.html (never in a release index.html or the SCORM zip). */
 .rv-tab{position:fixed;z-index:150;left:16px;bottom:16px;display:flex;align-items:center;gap:8px;
@@ -125,110 +132,71 @@ textarea.rv-in{resize:vertical;min-height:84px}
 
 <div class="wrap" id="main">
   <header>
-    <div class="eyebrow">AFC27 · SMP · Review 1 comments #67 and #4 · 14 Nov 2026</div>
+    <div class="eyebrow">AFC27 SMP · Review 1</div>
     <h1>Wrong Voice-over Clips</h1>
-    <p class="lead">Part 1: three clips play the wrong recording. The pictures and the subtitles are right (each card shows the subtitles next to what the voice says now); only the voice-over needs to be recorded again, in ElevenLabs, from the approved Arabic below. Part 2: three things for an Arabic speaker to listen to and confirm. Play each clip with sound to hear the problem. To comment, scroll to a card and tap the Comment button at the bottom of the screen: your comment is saved against the card you are looking at.</p>
   </header>
 
-  <section class="rules" aria-label="Rules for every recording">
-    <div class="eyebrow">For every recording</div>
-    <ul>
-      <li>Speak every word of each Arabic line exactly as written. Leave nothing out, add nothing, paraphrase nothing.</li>
-      <li>Saudi (Najdi) delivery. Keep to the timings shown.</li>
-      <li>Fahad is the narrator only. The characters are never Fahad.</li>
-      <li>Send back audio only, named as shown on each card.</li>
-    </ul>
+  <section class="steps" aria-label="What to do">
+    <div>
+      <h2>Voice-over: clips 1 to 3</h2>
+      <ol>
+        <li>Play the clip with sound.</li>
+        <li>Record the Arabic lines in ElevenLabs, word for word, at the times shown.</li>
+        <li>Use the voices listed. Fahad is the narrator only.</li>
+        <li>Send back audio only, with the file name shown. Questions: tap the Comment button.</li>
+      </ol>
+    </div>
+    <div>
+      <h2>Arabic speaker: checks 4 to 6</h2>
+      <ol>
+        <li>Play the clip or recording.</li>
+        <li>Answer the question in the green box.</li>
+        <li>Tap the Comment button at the bottom of the screen while the card is in view. Your comment is saved against that card.</li>
+      </ol>
+    </div>
   </section>
 
   <article class="card" id="clip-1">
-    <div class="head"><h2>1. SMP 2.2 · Two marshals, one match day</h2><span class="file">smp22-v01-hook.mp4 · screen 0.2 · 53.5 s</span></div>
-    <div class="rc"><span class="num">Review 1 · #67</span><q>In most training videos, the Arabic subtitles do not accurately match the information presented by the speaker.</q></div>
+    <div class="head"><h2>1. SMP 2.2 · Two marshals</h2><span class="file">smp22-v01-hook</span></div>
     <video controls preload="metadata" src="video/smp22-v01-hook.mp4"></video>
-    <div class="diff">
-      <div class="now"><b>Plays now</b>The match-day countdown (check-in, briefing, gates open). That recording belongs to the match-clock clip later in the lesson.</div>
-      <div class="should"><b>Should play</b>The narrator telling the story of Noura and Majed arriving for the same shift.</div>
-    </div>
-    <details class="cmp" open><summary>Subtitles and voice-over as they are now</summary><div class="cmpw"><table><thead><tr><th>Time</th><th>Arabic subtitles</th><th>Time</th><th>Voice-over says (machine transcript)</th></tr></thead><tbody><tr><td class="t">0.5–3.7</td><td class="arabic">المباراة نفسها، ووقت تسجيل الحضور نفسه، ومنظِّمان.</td><td class="t">0.0–3.0</td><td class="arabic heard">يعدوا تنازلياً لين انطلاق المباراة</td></tr><tr><td class="t">4.2–10.6</td><td class="arabic">نورة موجودة مبكراً، بزي رسمي نظيف، وبطاقة تصريح الدخول حول رقبتها.</td><td class="t">3.0–7.6</td><td class="arabic heard">تسجلون حضوركم قبل انطلاق المباراة بحوالي أربع ساعات ونص</td></tr><tr><td class="t">11.1–15.2</td><td class="arabic">تسجّل حضورها وتستلم جهاز اللاسلكي وتختبره.</td><td class="t">7.6–13.8</td><td class="arabic heard">توقعون وتستلمون معداتكم وتاكلون · وقبل ثلاث ساعات فيه إحاطة عامة</td></tr><tr><td class="t">15.7–23.4</td><td class="arabic">أما ماجد فيصل متأخراً أربعين دقيقة، وسترته العاكسة في حقيبته، وبطاقة تصريح الدخول في البيت.</td><td class="t">13.8–25.8</td><td class="arabic heard">تنتشرون في منطقتكم… · وقبل انطلاق المباراة بساعتين تكونون في نقطة التمركز · البوابات تفتح قبل انطلاق المباراة بتسعين دقيقة</td></tr><tr><td class="t">25.3–28.3</td><td class="arabic">ومن دونها لا يستطيع الدخول.</td><td class="t">25.8–34.2</td><td class="arabic heard">في الشوط الثاني تنتظرون تعليمات مشرفكم… · وبعد صافرة النهاية نشغل الخروج حوالي ساعتين</td></tr><tr><td class="t">28.8–37.9</td><td class="arabic">لذلك تبدأ نقطة تمركزه عند البوابة 4 - التي سيعبر منها ألفا مشجع - اليوم فارغة.</td><td class="t">34.2–53.0</td><td class="arabic heard">…لما يعطيكم مشرفكم إشارة انهاء المناوبة… · انتبهوا لذروات الضغط الثلاث…</td></tr></tbody></table></div><p class="direction">The subtitles tell the Noura and Majed story; the voice-over is the match-day countdown, running to 53 s. Note: the subtitles are in formal Arabic, the lines to record below are the approved Saudi-dialect version, so after re-recording they match in meaning, not word for word (as agreed, DT 11).</p></details>
-    <p class="voices"><strong>Voice:</strong> Narrator (Khalid, heard only) = <strong>Fahad</strong>.</p>
-    <p class="direction">Calm storyteller, a slight contrast between Noura (bright, ready) and Majed (flat, let down). Start at 0.5 s; nothing after 38 s, the picture finishes on its own.</p>
-    <ol class="lines">
-      <li><span class="t">0.5 – 3.7 s</span><div><span class="who">Narrator</span><p class="arabic">نفس المباراة، ونفس وقت تسجيل الحضور، ومنظِّمين اثنين.</p></div></li>
-      <li><span class="t">4.2 – 10.6 s</span><div><span class="who">Narrator</span><p class="arabic">نورة جات بدري، بزيّ نظيف، وبطاقة تصريح الدخول معلّقة على رقبتها.</p></div></li>
-      <li><span class="t">11.1 – 15.2 s</span><div><span class="who">Narrator</span><p class="arabic">تسجّل حضورها، وتستلم جهاز اللاسلكي وتجرّبه.</p></div></li>
-      <li><span class="t">15.7 – 23.4 s</span><div><span class="who">Narrator</span><p class="arabic">ماجد يوصل متأخر أربعين دقيقة، سترته العاكسة في شنطته، وبطاقة تصريح الدخول في البيت.</p></div></li>
-      <li><span class="t">25.3 – 28.3 s</span><div><span class="who">Narrator</span><p class="arabic">وبدونها ما يقدر يدخل.</p></div></li>
-      <li><span class="t">28.8 – 37.9 s</span><div><span class="who">Narrator</span><p class="arabic">فنقطة تمركزه عند البوابة 4 - اللي بيمر منها ألفين مشجع - تبدأ اليوم فاضية.</p></div></li>
-    </ol>
-    <div class="flag"><b>Check before recording:</b> line 3 says Noura collects and tests a radio. It is the approved line and is kept as written; the client says only a few marshals carry radios. Comment here if it should change.</div>
-    <p class="save">Save as <code>smp22-v01-hook.ar.m4a</code></p>
-    <div class="actions"><button type="button" class="cbtn" data-target="clip-1" hidden>Comment on this clip</button></div>
+    <p class="direction"><b>Problem:</b> it plays the wrong voice-over (the match-day countdown from another clip).</p>
+    <p class="voices"><strong>Voices:</strong> Narrator = <strong>Fahad</strong>. Calm storyteller. Nothing after 38 s.</p>
+    <ol class="lines"><li><span class="t">0.5 – 3.7 s</span><div><span class="who">Narrator</span><p class="arabic">نفس المباراة، ونفس وقت تسجيل الحضور، ومنظِّمين اثنين.</p></div></li><li><span class="t">4.2 – 10.6 s</span><div><span class="who">Narrator</span><p class="arabic">نورة جات بدري، بزيّ نظيف، وبطاقة تصريح الدخول معلّقة على رقبتها.</p></div></li><li><span class="t">11.1 – 15.2 s</span><div><span class="who">Narrator</span><p class="arabic">تسجّل حضورها، وتستلم جهاز اللاسلكي وتجرّبه.</p></div></li><li><span class="t">15.7 – 23.4 s</span><div><span class="who">Narrator</span><p class="arabic">ماجد يوصل متأخر أربعين دقيقة، سترته العاكسة في شنطته، وبطاقة تصريح الدخول في البيت.</p></div></li><li><span class="t">25.3 – 28.3 s</span><div><span class="who">Narrator</span><p class="arabic">وبدونها ما يقدر يدخل.</p></div></li><li><span class="t">28.8 – 37.9 s</span><div><span class="who">Narrator</span><p class="arabic">فنقطة تمركزه عند البوابة 4 - اللي بيمر منها ألفين مشجع - تبدأ اليوم فاضية.</p></div></li></ol>
+    <p class="save">Send back: <code>smp22-v01-hook.ar.m4a</code></p>
+    <details class="cmp"><summary>Show what the clip says now</summary><div class="cmpw"><table><thead><tr><th>Time</th><th>Arabic subtitles</th><th>Time</th><th>Voice-over says (machine transcript)</th></tr></thead><tbody><tr><td class="t">0.5–3.7</td><td class="arabic">المباراة نفسها، ووقت تسجيل الحضور نفسه، ومنظِّمان.</td><td class="t">0.0–3.0</td><td class="arabic heard">يعدوا تنازلياً لين انطلاق المباراة</td></tr><tr><td class="t">4.2–10.6</td><td class="arabic">نورة موجودة مبكراً، بزي رسمي نظيف، وبطاقة تصريح الدخول حول رقبتها.</td><td class="t">3.0–7.6</td><td class="arabic heard">تسجلون حضوركم قبل انطلاق المباراة بحوالي أربع ساعات ونص</td></tr><tr><td class="t">11.1–15.2</td><td class="arabic">تسجّل حضورها وتستلم جهاز اللاسلكي وتختبره.</td><td class="t">7.6–13.8</td><td class="arabic heard">توقعون وتستلمون معداتكم وتاكلون · وقبل ثلاث ساعات فيه إحاطة عامة</td></tr><tr><td class="t">15.7–23.4</td><td class="arabic">أما ماجد فيصل متأخراً أربعين دقيقة، وسترته العاكسة في حقيبته، وبطاقة تصريح الدخول في البيت.</td><td class="t">13.8–25.8</td><td class="arabic heard">تنتشرون في منطقتكم… · وقبل انطلاق المباراة بساعتين تكونون في نقطة التمركز · البوابات تفتح قبل انطلاق المباراة بتسعين دقيقة</td></tr><tr><td class="t">25.3–28.3</td><td class="arabic">ومن دونها لا يستطيع الدخول.</td><td class="t">25.8–34.2</td><td class="arabic heard">في الشوط الثاني تنتظرون تعليمات مشرفكم… · وبعد صافرة النهاية نشغل الخروج حوالي ساعتين</td></tr><tr><td class="t">28.8–37.9</td><td class="arabic">لذلك تبدأ نقطة تمركزه عند البوابة 4 - التي سيعبر منها ألفا مشجع - اليوم فارغة.</td><td class="t">34.2–53.0</td><td class="arabic heard">…لما يعطيكم مشرفكم إشارة انهاء المناوبة… · انتبهوا لذروات الضغط الثلاث…</td></tr></tbody></table></div></details>
+    <div class="actions"><button type="button" class="cbtn" data-target="clip-1" hidden>Comment</button></div>
   </article>
-
   <article class="card" id="clip-2">
-    <div class="head"><h2>2. SMP 2.1 · The emergency gate</h2><span class="file">smp21-v4-gate.mp4 · screen 5.7 · 20.1 s</span></div>
-    <div class="rc"><span class="num">Review 1 · #67</span><q>In most training videos, the Arabic subtitles do not accurately match the information presented by the speaker.</q></div>
+    <div class="head"><h2>2. SMP 2.1 · The emergency gate</h2><span class="file">smp21-v4-gate</span></div>
     <video controls preload="metadata" src="video/smp21-v4-gate.mp4"></video>
-    <div class="diff">
-      <div class="now"><b>Plays now</b>A narrator describing the scene ("a man says he is from venue management…").</div>
-      <div class="should"><b>Should play</b>The dialogue only, no narrator: the man asks Faisal to open the gate, Faisal politely says no.</div>
-    </div>
-    <details class="cmp" open><summary>Subtitles and voice-over as they are now</summary><div class="cmpw"><table><thead><tr><th>Time</th><th>Arabic subtitles</th><th>Time</th><th>Voice-over says (machine transcript)</th></tr></thead><tbody><tr><td class="t">0.3–5.8</td><td class="arabic">رجل: أنا من إدارة الملعب. افتح بوابة الطوارئ عشان عائلتي تدخل.</td><td class="t">0.0–6.0</td><td class="arabic heard">رجل يقول إنه من إدارة الملعب ويطلب من فيصل فتح بوابة الطوارئ لعائلته</td></tr><tr><td class="t">6.4–9.8</td><td class="arabic">فيصل: حيّاك الله أستاذي. والله آسف، ما أقدر أفتح هذي البوابة.</td><td class="t">6.0–10.0</td><td class="arabic heard">فيصل يعتذر له بأدب ويبقي البوابة مغلقة</td></tr><tr><td class="t">10.1–16.1</td><td class="arabic">فيصل: بعد اذنك وريني بطاقة الدخول؟ بكلّم المشرف حقي الحين.</td><td class="t">10.0–16.0</td><td class="arabic heard">بعدها يطلب فيصل من الرجل بطاقة الدخول ويخبره أنه سيتواصل مع مشرفه حالاً</td></tr><tr><td class="t">—</td><td class="arabic">—</td><td class="t">16.0–20.0</td><td class="arabic heard">ثم يرفع جهاز اللاسلكي استعداداً للاتصال بمشرفه</td></tr></tbody></table></div><p class="direction">The subtitles are the characters speaking; the voice-over is a narrator describing them, plus a last line about the radio that has no subtitle. After re-recording, the voice matches the subtitles word for word.</p></details>
-    <p class="voices"><strong>Voices:</strong> Man = an adult Saudi male voice, firm and a little impatient, <strong>not Fahad</strong>. Faisal (marshal) = a young Saudi male voice, calm and polite, <strong>not Fahad</strong>, and not the same voice as the man.</p>
-    <p class="direction">A real conversation. Start at 0.3 s; silence after 16.1 s.</p>
-    <ol class="lines">
-      <li><span class="t">0.3 – 5.8 s</span><div><span class="who">Man</span><p class="arabic">أنا من إدارة الملعب. افتح بوابة الطوارئ عشان عائلتي تدخل.</p></div></li>
-      <li><span class="t">6.4 – 9.8 s</span><div><span class="who">Faisal</span><p class="arabic">حيّاك الله أستاذي. والله آسف، ما أقدر أفتح هذي البوابة.</p></div></li>
-      <li><span class="t">10.1 – 16.1 s</span><div><span class="who">Faisal</span><p class="arabic">بعد اذنك وريني بطاقة الدخول؟ بكلّم المشرف حقي الحين.</p></div></li>
-    </ol>
-    <p class="save">Save as <code>smp21-v4-gate.ar.m4a</code></p>
-    <div class="actions"><button type="button" class="cbtn" data-target="clip-2" hidden>Comment on this clip</button></div>
+    <p class="direction"><b>Problem:</b> a narrator describes the scene. It should be the two characters speaking, with no narrator.</p>
+    <p class="voices"><strong>Voices:</strong> Man = adult Saudi male, firm. Faisal = young Saudi male, calm and polite. Neither is Fahad.</p>
+    <ol class="lines"><li><span class="t">0.3 – 5.8 s</span><div><span class="who">Man</span><p class="arabic">أنا من إدارة الملعب. افتح بوابة الطوارئ عشان عائلتي تدخل.</p></div></li><li><span class="t">6.4 – 9.8 s</span><div><span class="who">Faisal</span><p class="arabic">حيّاك الله أستاذي. والله آسف، ما أقدر أفتح هذي البوابة.</p></div></li><li><span class="t">10.1 – 16.1 s</span><div><span class="who">Faisal</span><p class="arabic">بعد اذنك وريني بطاقة الدخول؟ بكلّم المشرف حقي الحين.</p></div></li></ol>
+    <p class="save">Send back: <code>smp21-v4-gate.ar.m4a</code></p>
+    <details class="cmp"><summary>Show what the clip says now</summary><div class="cmpw"><table><thead><tr><th>Time</th><th>Arabic subtitles</th><th>Time</th><th>Voice-over says (machine transcript)</th></tr></thead><tbody><tr><td class="t">0.3–5.8</td><td class="arabic">رجل: أنا من إدارة الملعب. افتح بوابة الطوارئ عشان عائلتي تدخل.</td><td class="t">0.0–6.0</td><td class="arabic heard">رجل يقول إنه من إدارة الملعب ويطلب من فيصل فتح بوابة الطوارئ لعائلته</td></tr><tr><td class="t">6.4–9.8</td><td class="arabic">فيصل: حيّاك الله أستاذي. والله آسف، ما أقدر أفتح هذي البوابة.</td><td class="t">6.0–10.0</td><td class="arabic heard">فيصل يعتذر له بأدب ويبقي البوابة مغلقة</td></tr><tr><td class="t">10.1–16.1</td><td class="arabic">فيصل: بعد اذنك وريني بطاقة الدخول؟ بكلّم المشرف حقي الحين.</td><td class="t">10.0–16.0</td><td class="arabic heard">بعدها يطلب فيصل من الرجل بطاقة الدخول ويخبره أنه سيتواصل مع مشرفه حالاً</td></tr><tr><td class="t">—</td><td class="arabic">—</td><td class="t">16.0–20.0</td><td class="arabic heard">ثم يرفع جهاز اللاسلكي استعداداً للاتصال بمشرفه</td></tr></tbody></table></div></details>
+    <div class="actions"><button type="button" class="cbtn" data-target="clip-2" hidden>Comment</button></div>
   </article>
-
   <article class="card" id="clip-3">
-    <div class="head"><h2>3. SMP 2.1 · Hold that man</h2><span class="file">smp21-v4-hold.mp4 · screen 5.8 · 20.4 s</span></div>
-    <div class="rc"><span class="num">Review 1 · #67</span><q>In most training videos, the Arabic subtitles do not accurately match the information presented by the speaker.</q></div>
+    <div class="head"><h2>3. SMP 2.1 · Hold that man</h2><span class="file">smp21-v4-hold</span></div>
     <video controls preload="metadata" src="video/smp21-v4-hold.mp4"></video>
-    <div class="diff">
-      <div class="now"><b>Plays now</b>A narrator describing the scene.</div>
-      <div class="should"><b>Should play</b>The dialogue only: a staff member asks Faisal to hold a man; Faisal says he cannot, keeps him in sight and calls Security.</div>
-    </div>
-    <details class="cmp" open><summary>Subtitles and voice-over as they are now</summary><div class="cmpw"><table><thead><tr><th>Time</th><th>Arabic subtitles</th><th>Time</th><th>Voice-over says (machine transcript)</th></tr></thead><tbody><tr><td class="t">0.2–6.7</td><td class="arabic">موظف: امسك هالرجّال هنا لين توصل الشرطة، أظن إنه سرق جوال.</td><td class="t">0.0–7.0</td><td class="arabic heard">موظف يطلب من فيصل يمسك شاب واقف عند الجدار لين توصل الشرطة · لأنه يشتبه أنه سرق جوال</td></tr><tr><td class="t">7.3–14.7</td><td class="arabic">فيصل: ما أقدر أمسك أحد، بس بخلّيه قدّام عيني وبكلّم الأمن الحين.</td><td class="t">7.0–15.0</td><td class="arabic heard">فيصل يسمع الطلب ويرفض بهدوء · فيصل يوضح أنه ما يقدر يمسك أحد · لكنه بيخلي الشاب قدام عينه</td></tr><tr><td class="t">—</td><td class="arabic">—</td><td class="t">15.0–20.0</td><td class="arabic heard">وبعدين يرفع اللاسلكي عشان يبلغ الأمن فورا</td></tr></tbody></table></div><p class="direction">Same problem as clip 2: a narrator describing the scene instead of the dialogue, with an extra line about the radio. After re-recording, the voice matches the subtitles word for word.</p></details>
-    <p class="voices"><strong>Voices:</strong> Staff member = an adult Saudi male voice, hurried and worried, <strong>not Fahad</strong>, and not the man from clip 2. Faisal = the <strong>same voice as Faisal in clip 2</strong>, <strong>not Fahad</strong>.</p>
-    <p class="direction">Start at 0.2 s; silence after 14.7 s.</p>
-    <ol class="lines">
-      <li><span class="t">0.2 – 6.7 s</span><div><span class="who">Staff member</span><p class="arabic">امسك هالرجّال هنا لين توصل الشرطة، أظن إنه سرق جوال.</p></div></li>
-      <li><span class="t">7.3 – 14.7 s</span><div><span class="who">Faisal</span><p class="arabic">ما أقدر أمسك أحد، بس بخلّيه قدّام عيني وبكلّم الأمن الحين.</p></div></li>
-    </ol>
-    <p class="save">Save as <code>smp21-v4-hold.ar.m4a</code></p>
-    <div class="actions"><button type="button" class="cbtn" data-target="clip-3" hidden>Comment on this clip</button></div>
+    <p class="direction"><b>Problem:</b> same as clip 2. It should be the two characters speaking, with no narrator.</p>
+    <p class="voices"><strong>Voices:</strong> Staff member = adult Saudi male, worried (not the man from clip 2). Faisal = same voice as clip 2. Neither is Fahad.</p>
+    <ol class="lines"><li><span class="t">0.2 – 6.7 s</span><div><span class="who">Staff member</span><p class="arabic">امسك هالرجّال هنا لين توصل الشرطة، أظن إنه سرق جوال.</p></div></li><li><span class="t">7.3 – 14.7 s</span><div><span class="who">Faisal</span><p class="arabic">ما أقدر أمسك أحد، بس بخلّيه قدّام عيني وبكلّم الأمن الحين.</p></div></li></ol>
+    <p class="save">Send back: <code>smp21-v4-hold.ar.m4a</code></p>
+    <details class="cmp"><summary>Show what the clip says now</summary><div class="cmpw"><table><thead><tr><th>Time</th><th>Arabic subtitles</th><th>Time</th><th>Voice-over says (machine transcript)</th></tr></thead><tbody><tr><td class="t">0.2–6.7</td><td class="arabic">موظف: امسك هالرجّال هنا لين توصل الشرطة، أظن إنه سرق جوال.</td><td class="t">0.0–7.0</td><td class="arabic heard">موظف يطلب من فيصل يمسك شاب واقف عند الجدار لين توصل الشرطة · لأنه يشتبه أنه سرق جوال</td></tr><tr><td class="t">7.3–14.7</td><td class="arabic">فيصل: ما أقدر أمسك أحد، بس بخلّيه قدّام عيني وبكلّم الأمن الحين.</td><td class="t">7.0–15.0</td><td class="arabic heard">فيصل يسمع الطلب ويرفض بهدوء · فيصل يوضح أنه ما يقدر يمسك أحد · لكنه بيخلي الشاب قدام عينه</td></tr><tr><td class="t">—</td><td class="arabic">—</td><td class="t">15.0–20.0</td><td class="arabic heard">وبعدين يرفع اللاسلكي عشان يبلغ الأمن فورا</td></tr></tbody></table></div></details>
+    <div class="actions"><button type="button" class="cbtn" data-target="clip-3" hidden>Comment</button></div>
   </article>
-
-  <header class="part">
-    <div class="eyebrow">Part 2 · for the Arabic speaker to check</div>
-    <h2>Listen and confirm</h2>
-    <p class="lead">Three more checks found while transcribing every SMP clip. Please listen, then leave a comment on each card with your answer.</p>
-  </header>
-
   <article class="card" id="check-4">
-    <div class="head"><h2>4. SMP 4.2 · Stage 3 (a voice nobody can read)</h2><span class="file">smp42-v09-stage3.mp4 · screen 6.11 · 12 s</span></div>
-    <div class="rc"><span class="num">Review 1 · #67</span><q>In most training videos, the Arabic subtitles do not accurately match the information presented by the speaker.</q> Found while checking this comment.</div>
+    <div class="head"><h2>4. SMP 4.2 · Voice in the crowd</h2><span class="file">smp42-v09-stage3 · 2.6 – 7.6 s</span></div>
     <video controls preload="metadata" src="video/smp42-v09-stage3.mp4"></video>
-    <div class="diff">
-      <div class="now"><b>Plays now</b>Between about 2.6 and 7.6 s a voice in the crowd says a rumour. The clip was planned as silent, so it has no subtitles: a learner without sound misses it.</div>
-      <div class="should"><b>Decide</b>Keep the voice and add subtitles for it, or remove the sound so the clip is silent as planned.</div>
-    </div>
-    <details class="cmp" open><summary>Subtitles and voice-over as they are now</summary><div class="cmpw"><table><thead><tr><th>Time</th><th>Arabic subtitles</th><th>Time</th><th>Voice-over says (machine transcript)</th></tr></thead><tbody><tr><td class="t">—</td><td class="arabic">(no subtitles)</td><td class="t">2.6–7.6</td><td class="arabic heard">يقولون أن البوابة ستة مغلقة، الجميع إلى البوابة ثمانية.</td></tr></tbody></table></div><p class="direction">A voice with no subtitle at all.</p></details>
-    <ol class="lines">
-      <li><span class="t">2.6 – 7.6 s</span><div><span class="who">Voice in the crowd (machine transcript, not checked)</span><p class="arabic">يقولون أن البوابة ستة مغلقة، الجميع إلى البوابة ثمانية.</p></div></li>
-    </ol>
-    <div class="flag"><b>Please answer:</b> (1) Write the line exactly as you hear it. (2) Keep it with subtitles, or remove the sound? English meaning: "They say Gate 6 is closed, everyone to Gate 8."</div>
-    <div class="actions"><button type="button" class="cbtn" data-target="check-4" hidden>Comment on this clip</button></div>
+    <p class="direction">A voice in the crowd says something, but the clip has no subtitles for it.</p>
+    <div class="ask"><b>Please answer:</b> 1) Write the line exactly as you hear it. 2) Keep the voice (we add subtitles), or remove the sound?</div>
+    <details class="cmp"><summary>Show what the clip says now</summary><div class="cmpw"><table><thead><tr><th>Time</th><th>Arabic subtitles</th><th>Time</th><th>Voice-over says (machine transcript)</th></tr></thead><tbody><tr><td class="t">—</td><td class="arabic">(no subtitles)</td><td class="t">2.6–7.6</td><td class="arabic heard">يقولون أن البوابة ستة مغلقة، الجميع إلى البوابة ثمانية.</td></tr></tbody></table></div></details>
+    <div class="actions"><button type="button" class="cbtn" data-target="check-4" hidden>Comment</button></div>
   </article>
-
   <article class="card" id="check-5">
-    <div class="head"><h2>5. SMP 1.3 · Phrase bank recordings</h2><span class="file">screen 5.1 · 17 recordings</span></div>
-    <div class="rc"><span class="num">Review 1 · #4</span><q>The written phrase and the voice phrase aren't identical.</q></div>
-    <p class="direction">The phrase cards show the approved Arabic, but 7 phrases were recorded with different words. The plan is to keep the card text and record these again. Play each recording and compare it with the card. Phrases 1, 4, 5, 6 and 11 match and are not listed.</p>
+    <div class="head"><h2>5. SMP 1.3 · Phrase recordings</h2><span class="file">7 phrases</span></div>
+    <p class="direction">Each card shows the approved Arabic. The recording says something different.</p>
     <div class="ptable">
       <div class="prow phead"><span>Phrase</span><span>Card says (approved)</span><span>Recording now (machine transcript)</span><span>Listen</span></div>
       <div class="prow"><span class="pn">2 · Welcome to the city</span><p class="arabic">حياكم الله في الرياض / جدة / الخبر</p><p class="arabic heard">أهلا وسهلا بك في الرياض / جدة / الخبر</p><span class="plist"><audio controls preload="none" src="audio/smp13-au-p02-riyadh-to-male.mp3" aria-label="Phrase 2 Riyadh, to a man"></audio><audio controls preload="none" src="audio/smp13-au-p02-jeddah-to-female.mp3" aria-label="Phrase 2 Jeddah, to a woman"></audio></span></div>
@@ -239,20 +207,19 @@ textarea.rv-in{resize:vertical;min-height:84px}
       <div class="prow"><span class="pn">10 · I'll ask a female colleague</span><p class="arabic">سأطلب زميلة لمساعدتك</p><p class="arabic heard">سأطلب من زميلة أن تساعدك</p><span class="plist"><audio controls preload="none" src="audio/smp13-au-p10-to-male.mp3" aria-label="Phrase 10 to a man"></audio><audio controls preload="none" src="audio/smp13-au-p10-to-female.mp3" aria-label="Phrase 10 to a woman"></audio></span></div>
       <div class="prow"><span class="pn">12 · Enjoy the match! Safe journey home</span><p class="arabic">استمتع بالمباراة! مع السلامة</p><p class="arabic heard">استمتع بالمباراة، أتمنى لك رحلة عودة آمنة إلى المنزل</p><span class="plist"><audio controls preload="none" src="audio/smp13-au-p12-to-male.mp3" aria-label="Phrase 12 to a man"></audio><audio controls preload="none" src="audio/smp13-au-p12-to-female.mp3" aria-label="Phrase 12 to a woman"></audio></span></div>
     </div>
-    <div class="flag"><b>Please answer:</b> do the recordings say what the second column shows? Phrase 9 differs by one word only (إلى): is that worth recording again, or acceptable? For "to a woman" the feminine forms are intended (تحتاجين، استمتعي).</div>
-    <div class="actions"><button type="button" class="cbtn" data-target="check-5" hidden>Comment on the phrase bank</button></div>
+    
+    <div class="ask"><b>Please answer:</b> Does each recording say what the orange column shows? Should phrase 9 (only «إلى» differs) be recorded again?</div>
+    
+    <div class="actions"><button type="button" class="cbtn" data-target="check-5" hidden>Comment</button></div>
   </article>
-
   <article class="card" id="check-6">
-    <div class="head"><h2>6. SMP 1.2 · Corrected Arabic subtitles</h2><span class="file">smp12-v3-2-3.mp4 · 16.5 s</span></div>
-    <div class="rc"><span class="num">Review 1 · #67</span><q>In most training videos, the Arabic subtitles do not accurately match the information presented by the speaker.</q></div>
+    <div class="head"><h2>6. SMP 1.2 · Corrected subtitles</h2><span class="file">smp12-v3-2-3</span></div>
     <video id="v123" controls preload="metadata" src="video/smp12-v3-2-3.mp4"></video>
-    <p class="direction">In 8 SMP 1.2 clips the Arabic subtitles showed the line before the one being spoken. They are now corrected to the approved Arabic on the same timings. This clip shows the fix; please play it with sound and confirm each subtitle matches what Khalid says.</p>
-    <div class="flag"><b>Please answer:</b> do the subtitles now match the voice, line by line?</div>
-    <div class="actions"><button type="button" class="cbtn" data-target="check-6" hidden>Comment on this clip</button></div>
+    <p class="direction">The Arabic subtitles were one line behind the voice. They are now fixed.</p>
+    <div class="ask"><b>Please answer:</b> Does each subtitle now match what Khalid says?</div>
+    
+    <div class="actions"><button type="button" class="cbtn" data-target="check-6" hidden>Comment</button></div>
   </article>
-
-  <footer>The Arabic is the client-approved text. The subtitles in the lessons already show these lines (clip 1 in formal Arabic, as agreed), so only the audio changes. After the new recordings are placed, each lesson is rebuilt and checked.</footer>
 </div>
 
 <script>
