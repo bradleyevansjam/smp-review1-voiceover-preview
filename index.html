@@ -270,7 +270,8 @@ textarea.rv-in{resize:vertical;min-height:84px}
         var t=document.createElement("track"); t.kind="subtitles"; t.srclang=l[0]; t.label=l[1];
         t.src=URL.createObjectURL(new Blob([txt],{type:"text/vtt"})); if(i===0) t.default=true;
         v.appendChild(t);
-        t.addEventListener("load",function(){ for(var k=0;k<v.textTracks.length;k++){ var tt=v.textTracks[k]; tt.mode = tt.language==="ar" ? "showing" : (tt.mode==="showing"&&tt.language!=="ar" ? "showing" : "disabled"); } });
+        if(!v.dataset.picked) t.addEventListener("load",function(){ if(v.dataset.picked) return; for(var k=0;k<v.textTracks.length;k++){ var tt=v.textTracks[k]; tt.mode = tt.language==="ar" ? "showing" : "disabled"; } });
+        v.addEventListener("click",function(){ v.dataset.picked="1"; },{once:true});
       }).catch(function(){});
     });
   });
