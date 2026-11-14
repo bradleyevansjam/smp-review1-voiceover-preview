@@ -1,0 +1,11 @@
+WEBVTT
+
+NOTE smp21-v4-hold en - same timings as the ar file (14 Nov 2026)
+
+1
+00:00:02.010 --> 00:00:06.160
+Staff member: Hold this man here until the police come - I think he stole a phone.
+
+2
+00:00:08.430 --> 00:00:13.830
+Faisal: I can't hold anyone, but I'll keep him in sight and call Security now.

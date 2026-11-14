@@ -136,6 +136,44 @@ textarea.rv-in{resize:vertical;min-height:84px}
     <h1>Wrong Voice-over Clips</h1>
   </header>
 
+  <section aria-label="Fixed clips" style="display:flex;flex-direction:column;gap:14px">
+    <div class="card" style="border-color:var(--accent,#1f5c43)">
+      <h2 style="margin:0">Fixed: 14 November</h2>
+      <p class="direction">These are the corrected clips now in the course. Subtitles are on; use the player's subtitle menu to switch between Arabic and English. The original cards further down show what was wrong.</p>
+    </div>
+    <article class="card" id="fixed-1">
+      <div class="head"><h2>SMP 2.2 · Two marshals</h2><span class="file">smp22-v01-hook · 50 s</span></div>
+      <video class="fx" data-a="smp22-v01-hook" controls preload="metadata" src="video/fixed/smp22-v01-hook.mp4"></video>
+      <p class="direction">The right voice-over: Fahad tells Noura's and Majed's story. New picture.</p>
+      <div class="actions"><button type="button" class="cbtn" data-target="fixed-1" hidden>Comment</button></div>
+    </article>
+    <article class="card" id="fixed-2">
+      <div class="head"><h2>SMP 2.1 · The emergency gate</h2><span class="file">smp21-v4-gate · 17 s</span></div>
+      <video class="fx" data-a="smp21-v4-gate" controls preload="metadata" src="video/fixed/smp21-v4-gate.mp4"></video>
+      <p class="direction">Scene remade: the man and Faisal speak their own lines, no narrator.</p>
+      <div class="actions"><button type="button" class="cbtn" data-target="fixed-2" hidden>Comment</button></div>
+    </article>
+    <article class="card" id="fixed-3">
+      <div class="head"><h2>SMP 2.1 · Hold that man</h2><span class="file">smp21-v4-hold · 15 s</span></div>
+      <video class="fx" data-a="smp21-v4-hold" controls preload="metadata" src="video/fixed/smp21-v4-hold.mp4"></video>
+      <p class="direction">Scene remade: the staff member and Faisal speak their own lines, no narrator.</p>
+      <div class="actions"><button type="button" class="cbtn" data-target="fixed-3" hidden>Comment</button></div>
+    </article>
+    <article class="card" id="fixed-4">
+      <div class="head"><h2>SMP 4.2 · Voice in the crowd</h2><span class="file">smp42-v09-stage3 · 12 s</span></div>
+      <video class="fx" data-a="smp42-v09-stage3" controls preload="metadata" src="video/fixed/smp42-v09-stage3.mp4"></video>
+      <p class="direction">Same clip; the crowd voice now has subtitles. The Arabic line is still to be confirmed.</p>
+      <div class="actions"><button type="button" class="cbtn" data-target="fixed-4" hidden>Comment</button></div>
+    </article>
+    <article class="card" id="fixed-5">
+      <div class="head"><h2>SMP 1.2 · What it means for you</h2><span class="file">smp12-v3-2-3 · 19 s</span></div>
+      <video class="fx" data-a="smp12-v3-2-3" controls preload="metadata" src="video/fixed/smp12-v3-2-3.mp4"></video>
+      <p class="direction">New version, with each subtitle timed to the moment Khalid says it.</p>
+      <div class="actions"><button type="button" class="cbtn" data-target="fixed-5" hidden>Comment</button></div>
+    </article>
+    <div class="card"><h2 style="margin:0">Before the fix</h2><p class="direction">The cards below are the original checks, kept for reference. Their recordings are done.</p></div>
+  </section>
+
   <section class="steps" aria-label="What to do">
     <div>
       <h2>Voice-over: clips 1 to 3</h2>
@@ -224,6 +262,19 @@ textarea.rv-in{resize:vertical;min-height:84px}
 </div>
 
 <script>
+(function(){  /* fixed clips: Arabic and English subtitle tracks, Arabic shown first */
+  document.querySelectorAll("video.fx").forEach(function(v){
+    [["ar","العربية"],["en","English"]].forEach(function(l, i){
+      fetch("captions/"+v.dataset.a+"."+l[0]+".fixed.vtt.txt").then(function(r){ return r.ok ? r.text() : null; }).then(function(txt){
+        if(!txt) return;
+        var t=document.createElement("track"); t.kind="subtitles"; t.srclang=l[0]; t.label=l[1];
+        t.src=URL.createObjectURL(new Blob([txt],{type:"text/vtt"})); if(i===0) t.default=true;
+        v.appendChild(t);
+        t.addEventListener("load",function(){ for(var k=0;k<v.textTracks.length;k++){ var tt=v.textTracks[k]; tt.mode = tt.language==="ar" ? "showing" : (tt.mode==="showing"&&tt.language!=="ar" ? "showing" : "disabled"); } });
+      }).catch(function(){});
+    });
+  });
+})();
 (async function(){
   try{
     var r=await fetch("captions/smp12-v3-2-3.ar.vtt.txt"); if(!r.ok) return;
